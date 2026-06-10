@@ -66,7 +66,7 @@ const secretSpecimen = {
   discoveryYear: 2026,
   flag: "DINO{url_clues_matter}",
   secretNote:
-    "This specimen should not be publicly accessible. If you can see this, there is a security vulnerability in our access control system!",
+    "This specimen should not be publicly accessible. If you can see this, there is a security vulnerability in our access control system! Note: specimens tagged Vault 7 connect to the lab's Genesis Vault terminal.",
 };
 
 function SpecimenDatabaseContent() {

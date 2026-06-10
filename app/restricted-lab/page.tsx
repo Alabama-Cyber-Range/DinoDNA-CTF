@@ -112,10 +112,13 @@ function RestrictedLabPage() {
               This restricted area contains information about our experimental dinosaur cloning project. 
               The fact that you can see this without proper authentication is a serious security concern!
             </p>
-            <div className="text-xs text-amber-600 font-mono bg-amber-100 p-3 rounded-lg">
+            <div className="text-xs text-amber-600 font-mono bg-amber-100 p-3 rounded-lg space-y-1">
               <p>PROJECT STATUS: Active</p>
               <p>SECURITY LEVEL: Compromised</p>
               <p>RECOMMENDATION: Implement proper access control immediately</p>
+              <p className="pt-1 border-t border-amber-200/80">
+                GENESIS VAULT TERMINAL: /final-unlock
+              </p>
             </div>
           </div>
         </div>

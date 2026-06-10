@@ -38,7 +38,8 @@ function SecurityAuditPage() {
     }
   }
 
-  const allFlagsFound = foundFlags.length === ALL_FLAGS.length
+  const allFlagsFound = checkFlag('DINO{lab_secured}')
+  const vaultReady = foundFlags.length >= ALL_FLAGS.length - 1
 
   // Flag descriptions for educational value
   const flagDescriptions: Record<string, { concept: string; hint: string }> = {
@@ -88,7 +89,7 @@ function SecurityAuditPage() {
     },
     'DINO{lab_secured}': {
       concept: 'Final Challenge',
-      hint: 'Collect all other flags first, then visit the Final Unlock page',
+      hint: 'Open the Genesis Vault on the Mission Briefing once you have 11 fragments',
     },
   }
 
@@ -131,19 +132,23 @@ function SecurityAuditPage() {
               />
             </div>
 
-            {allFlagsFound && (
+            {vaultReady && (
               <div className="mt-4 p-4 bg-primary/10 border border-primary/30 rounded-xl text-center">
                 <Trophy className="h-8 w-8 text-primary mx-auto mb-2" />
-                <h3 className="font-bold text-primary">Congratulations!</h3>
+                <h3 className="font-bold text-primary">
+                  {allFlagsFound ? 'Lab Fully Secured!' : 'Genesis Vault Unlocked!'}
+                </h3>
                 <p className="text-sm text-muted-foreground mb-3">
-                  You&apos;ve found all DNA fragments!
+                  {allFlagsFound
+                    ? "You've recovered every DNA fragment. View your certificate."
+                    : "You've recovered enough fragments to access the Genesis Vault."}
                 </p>
                 <Link
                   href="/final-unlock"
                   className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg font-medium hover:bg-primary/90 transition-colors"
                 >
                   <Trophy className="h-4 w-4" />
-                  View Final Message
+                  {allFlagsFound ? 'View Certificate' : 'Open Genesis Vault'}
                 </Link>
               </div>
             )}
@@ -255,6 +260,31 @@ function SecurityAuditPage() {
 
         {/* Sidebar */}
         <div className="space-y-4">
+          {/* Genesis Vault — always visible so students know the endpoint exists */}
+          <div className="glass-card rounded-2xl p-6 border border-primary/20">
+            <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
+              🔒 Genesis Vault
+            </h3>
+            <p className="text-sm text-muted-foreground mb-3">
+              The lab&apos;s final archive opens after {ALL_FLAGS.length - 1} DNA fragments
+              are recovered. You can attempt access anytime from the Mission Briefing.
+            </p>
+            <div className="text-xs text-muted-foreground mb-3">
+              Vault clearance: {Math.min(foundFlags.length, ALL_FLAGS.length - 1)} /{' '}
+              {ALL_FLAGS.length - 1} fragments
+            </div>
+            <Link
+              href="/final-unlock"
+              className={`inline-flex items-center gap-2 w-full justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                vaultReady
+                  ? 'bg-primary text-primary-foreground hover:bg-primary/90'
+                  : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
+              }`}
+            >
+              {vaultReady ? 'Open Genesis Vault' : 'Attempt Vault Access'}
+            </Link>
+          </div>
+
           {/* Checklist */}
           <div className="glass-card rounded-2xl p-6 border border-border">
             <h3 className="font-semibold text-foreground mb-4">📋 Vulnerability Checklist</h3>

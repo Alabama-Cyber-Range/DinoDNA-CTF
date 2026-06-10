@@ -30,9 +30,14 @@ function FinalUnlockPage() {
           <div className="inline-flex items-center justify-center p-4 bg-muted rounded-full mb-6">
             <Lock className="h-10 w-10 text-muted-foreground" />
           </div>
+          <p className="text-xs font-mono text-primary/70 uppercase tracking-wider mb-2">
+            VAULT-7 · Genesis Vault Terminal
+          </p>
           <h1 className="text-2xl font-bold text-foreground mb-4">Access Denied</h1>
           <p className="text-muted-foreground mb-6">
-            You need to find at least 11 DNA fragments before you can unlock this page.
+            You found the Genesis Vault — but your cyber intern clearance isn&apos;t high
+            enough yet. Recover {ALL_FLAGS.length - 1} DNA fragments across the lab to
+            unlock the final archive.
           </p>
           <div className="mb-6">
             <div className="text-sm text-muted-foreground mb-2">

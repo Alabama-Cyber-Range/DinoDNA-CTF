@@ -1,8 +1,9 @@
 "use client";
 
 import { ClientLayout } from "@/components/client-layout";
+import { HiddenHtmlComment } from "@/components/hidden-html-comment";
 import { SplineHero } from "@/components/spline-hero";
-import { useFlags } from "@/lib/flag-context";
+import { useFlags, ALL_FLAGS } from "@/lib/flag-context";
 import Link from "next/link";
 import {
   FlaskConical,
@@ -83,6 +84,12 @@ const missions = [
 function HomePage() {
   const { foundFlags, progress } = useFlags();
   const remaining = 12 - foundFlags.length;
+  const vaultFragmentsNeeded = ALL_FLAGS.length - 1;
+  const vaultReady = foundFlags.length >= vaultFragmentsNeeded;
+  const vaultFragmentsRemaining = Math.max(
+    0,
+    vaultFragmentsNeeded - foundFlags.length,
+  );
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">
@@ -355,11 +362,11 @@ function HomePage() {
             );
           })}
 
-          {/* Final Vault teaser — grows more dramatic with progress */}
+          {/* Genesis Vault — links to /final-unlock so students can discover and try access */}
           <Link
-            href="/security-audit"
+            href="/final-unlock"
             className={`group relative rounded-2xl p-6 border overflow-hidden transition-all duration-300 hover:-translate-y-1 ${
-              progress === 100
+              vaultReady
                 ? "border-primary/50 bg-gradient-to-br from-primary/15 to-accent/10 animate-pulse-glow"
                 : "glass-card border-dashed border-primary/30"
             }`}
@@ -367,7 +374,7 @@ function HomePage() {
             <div className="flex items-start justify-between mb-4">
               <div
                 className={`p-3 rounded-xl transition-transform group-hover:scale-110 ${
-                  progress === 100
+                  vaultReady
                     ? "bg-primary/25 text-primary"
                     : "bg-secondary text-muted-foreground"
                 }`}
@@ -380,12 +387,19 @@ function HomePage() {
             </div>
             <h3 className="font-bold text-foreground text-lg">Genesis Vault</h3>
             <p className="text-sm text-muted-foreground mt-1">
-              {progress === 100
-                ? "All systems secured. The vault is ready to open!"
-                : `Sealed until all fragments are recovered. ${remaining} to go.`}
+              {vaultReady
+                ? "Clearance granted. The vault is ready to open!"
+                : `Final lab archive — sealed until ${vaultFragmentsNeeded} DNA fragments are recovered.`}
             </p>
+            {!vaultReady && (
+              <p className="text-xs text-primary/70 mt-2 italic">
+                {vaultFragmentsRemaining} fragment
+                {vaultFragmentsRemaining === 1 ? "" : "s"} until vault access ·
+                linked to Specimen Vault 7
+              </p>
+            )}
             <div className="mt-4 flex items-center gap-1.5 text-sm font-semibold text-primary">
-              {progress === 100 ? "Open the vault" : "Track progress"}
+              {vaultReady ? "Open Genesis Vault" : "Attempt vault access"}
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </div>
           </Link>
@@ -423,11 +437,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      {/*
-        TEACHER NOTE: Flag hidden here for students who inspect source code
-        DINO{check_the_source}
-      */}
+      {/* Footer — real HTML comment for source-code flag (see HiddenHtmlComment) */}
+      <HiddenHtmlComment text="TEACHER NOTE: Flag hidden here for students who inspect source code — DINO{check_the_source}" />
       <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>
           DinoDNA Research Lab &copy; 2026 | Educational Cybersecurity Challenge
