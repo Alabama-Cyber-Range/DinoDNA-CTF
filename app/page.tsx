@@ -82,13 +82,13 @@ const missions = [
 ];
 
 function HomePage() {
-  const { foundFlags, progress } = useFlags();
-  const remaining = 12 - foundFlags.length;
+  const { mainFlagCount, hiddenFlagCount, progress } = useFlags();
+  const remaining = ALL_FLAGS.length - mainFlagCount;
   const vaultFragmentsNeeded = ALL_FLAGS.length - 1;
-  const vaultReady = foundFlags.length >= vaultFragmentsNeeded;
+  const vaultReady = mainFlagCount >= vaultFragmentsNeeded;
   const vaultFragmentsRemaining = Math.max(
     0,
-    vaultFragmentsNeeded - foundFlags.length,
+    vaultFragmentsNeeded - mainFlagCount,
   );
 
   return (
@@ -186,9 +186,12 @@ function HomePage() {
                 Genome Recovery Progress
               </h2>
               <p className="text-sm text-muted-foreground">
-                {foundFlags.length} of 12 DNA fragments recovered
+                {mainFlagCount} of 12 DNA fragments recovered
                 {remaining > 0 && (
                   <span className="text-primary"> · {remaining} remaining</span>
+                )}
+                {hiddenFlagCount > 0 && (
+                  <span className="text-accent"> · +{hiddenFlagCount} classified</span>
                 )}
               </p>
             </div>
@@ -211,7 +214,7 @@ function HomePage() {
         {/* Fragment tiles styled like DNA sample vials */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
           {Array.from({ length: 12 }).map((_, i) => {
-            const found = i < foundFlags.length;
+            const found = i < mainFlagCount;
             return (
               <div
                 key={i}
@@ -270,7 +273,7 @@ function HomePage() {
         <StatusStat
           icon={Fingerprint}
           label="Fragments Recovered"
-          value={`${foundFlags.length} / 12`}
+          value={`${mainFlagCount} / 12`}
           tone="info"
         />
         <StatusStat
@@ -279,7 +282,7 @@ function HomePage() {
           value={
             progress === 100
               ? "Specialist"
-              : foundFlags.length >= 6
+              : mainFlagCount >= 6
                 ? "Field Agent"
                 : "Intern"
           }

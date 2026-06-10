@@ -1,28 +1,40 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Spline from "@splinetool/react-spline";
-import { FlaskConical, Scan, Sparkles } from "lucide-react";
+import type { Application } from "@splinetool/runtime";
+import { useFlags } from "@/lib/flag-context";
+import { FlaskConical, Scan, Sparkles, CheckCircle2 } from "lucide-react";
 
 /* ====================================================================
    SPLINE MODEL CONFIG
-   --------------------------------------------------------------------
-   Published runtime scene (Liquid Dino specimen vial + skull hologram).
-   To swap the model, open your scene in Spline → Export → "Code"/"Web"
-   and paste the new .splinecode URL below.
-
-   Leave blank to show the scan-ring loader permanently.
    ==================================================================== */
 const SPLINE_SCENE_URL =
   "https://prod.spline.design/kZUSz9Tlafsl6Bnf/scene.splinecode";
 
+/** Hidden flag revealed by inspecting / clicking the 3D vial scene */
+const VIAL_HIDDEN_FLAG = "DINO{under_vial}";
+
 /**
- * Minimal holographic loader — scan rings + "Loading..." while Spline streams in.
+ * Spline object names that trigger the hidden flag (match your scene object).
+ * In Spline, name the clickable/hidden object "under_vial" or similar.
  */
+const VIAL_TRIGGER_NAMES = ["under_vial", "under vial", "undervial"];
+
+function matchesVialTrigger(objectName: string | undefined) {
+  if (!objectName) return false;
+  const normalized = objectName.toLowerCase().replace(/[\s_-]+/g, "");
+  return (
+    normalized.includes("undervial") ||
+    VIAL_TRIGGER_NAMES.some(
+      (n) => objectName.toLowerCase() === n.toLowerCase(),
+    )
+  );
+}
+
 function SpecimenLoader() {
   return (
     <div className="relative h-full w-full flex items-center justify-center">
-      {/* Scan rings */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="h-[72%] w-[72%] rounded-full border border-primary/20 animate-pulse" />
         <div
@@ -30,7 +42,6 @@ function SpecimenLoader() {
           style={{ animationDuration: "12s" }}
         />
       </div>
-
       <p className="relative z-10 text-sm font-medium text-primary/70 tracking-wide">
         Loading...
       </p>
@@ -39,16 +50,38 @@ function SpecimenLoader() {
 }
 
 export function SplineHero() {
+  const { addFlag, checkFlag } = useFlags();
   const containerRef = useRef<HTMLDivElement>(null);
+  const splineRef = useRef<Application | null>(null);
   const [inView, setInView] = useState(false);
   const [loaded, setLoaded] = useState(false);
   const [errored, setErrored] = useState(false);
+  const [showDiscovery, setShowDiscovery] = useState(false);
+
+  const vialFlagFound = checkFlag(VIAL_HIDDEN_FLAG);
 
   const hasModel = SPLINE_SCENE_URL.trim().length > 0;
   const showModel = hasModel && inView && !errored;
   const showLoader = !loaded || errored;
 
-  // Lazy-load: only mount the heavy 3D model once the hero nears the viewport.
+  const handleSplineLoad = useCallback(
+    (spline: Application) => {
+      splineRef.current = spline;
+      setLoaded(true);
+
+      spline.addEventListener("mouseDown", (event) => {
+        const targetName = event.target?.name;
+        if (!matchesVialTrigger(targetName)) return;
+
+        if (addFlag(VIAL_HIDDEN_FLAG)) {
+          setShowDiscovery(true);
+          setTimeout(() => setShowDiscovery(false), 8000);
+        }
+      });
+    },
+    [addFlag],
+  );
+
   useEffect(() => {
     if (!hasModel) return;
     const el = containerRef.current;
@@ -73,7 +106,13 @@ export function SplineHero() {
       className="hologram scanline glow-ring aspect-square w-full max-w-[520px] mx-auto lg:mx-0 p-4 sm:p-6"
     >
       <CornerBrackets />
-      {/* Floating lab badges — match the Liquid Dino vial model */}
+
+      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1 text-[11px] font-semibold text-primary border border-primary/20">
+        <Scan className="h-3.5 w-3.5" />
+        LIVE HOLOGRAM
+        <span className="ml-1 inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+      </div>
+
       <div className="absolute top-4 right-4 z-20 animate-float-slow">
         <div className="glass-panel rounded-xl px-3 py-2 flex items-center gap-2 text-xs font-medium text-[rgb(15_42_56)]">
           <FlaskConical className="h-4 w-4 text-primary" />
@@ -87,9 +126,25 @@ export function SplineHero() {
         </div>
       </div>
 
-      {/* Visual content */}
+      {/* Hidden fragment discovery toast */}
+      {(showDiscovery || vialFlagFound) && (
+        <div className="absolute bottom-16 left-1/2 z-30 w-[90%] max-w-xs -translate-x-1/2 animate-fragment-pop">
+          <div className="glass-panel rounded-xl border border-accent/40 bg-accent/10 px-4 py-3 text-center shadow-lg">
+            <CheckCircle2 className="h-5 w-5 text-accent mx-auto mb-1" />
+            <p className="text-xs font-semibold text-foreground">
+              Classified fragment found!
+            </p>
+            <code className="text-xs font-mono text-primary mt-1 block">
+              {VIAL_HIDDEN_FLAG}
+            </code>
+            <p className="text-[10px] text-muted-foreground mt-1">
+              Submit at Security Audit
+            </p>
+          </div>
+        </div>
+      )}
+
       <div className="relative z-10 h-full w-full rounded-2xl overflow-hidden bg-white/30">
-        {/* Skeleton/vial loader — visible until the 3D model is ready */}
         <div
           className={`absolute inset-0 transition-opacity duration-700 ${
             showLoader ? "opacity-100" : "opacity-0 pointer-events-none"
@@ -106,7 +161,7 @@ export function SplineHero() {
           >
             <Spline
               scene={SPLINE_SCENE_URL}
-              onLoad={() => setLoaded(true)}
+              onLoad={handleSplineLoad}
               onError={() => setErrored(true)}
               style={{ width: "100%", height: "100%" }}
             />
@@ -119,7 +174,6 @@ export function SplineHero() {
   );
 }
 
-/** Decorative corner brackets for the hologram viewport. */
 function CornerBrackets() {
   const base = "absolute h-6 w-6 border-primary/40 pointer-events-none z-20";
   return (

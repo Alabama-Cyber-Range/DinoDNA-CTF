@@ -124,6 +124,16 @@ If the value is left blank (or the model fails to load), the hero automatically 
 | 11 | `DINO{access_control_required}` | Access control | Awarded together with #3 on **/restricted-lab** |
 | 12 | `DINO{lab_secured}` | Final challenge | Auto-awarded on **/final-unlock** once the other 11 are found |
 
+### Classified / hidden flags (optional bonus)
+
+These are **not** part of the 12-fragment progress bar or Genesis Vault requirement. They appear under **Classified Discoveries** on Security Audit.
+
+| Flag | Concept | Where / How to find it |
+|------|---------|------------------------|
+| `DINO{under_vial}` | 3D scene inspection | Hidden in the **Mission Briefing hologram** (Spline vial). Students read/click beneath the vial; clicking a Spline object named `under_vial` auto-recovers the flag. |
+
+To wire the click trigger in Spline, name the hidden object **`under_vial`** (see `components/spline-hero.tsx`).
+
 The full answer key also lives in source comments inside `app/lab-notes/page.tsx` and `app/security-audit/page.tsx`.
 
 ### Resetting progress

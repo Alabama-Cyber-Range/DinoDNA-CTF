@@ -7,9 +7,9 @@ import { Trophy, Shield, Dna, CheckCircle2, Star, Lock, ArrowLeft } from 'lucide
 import Link from 'next/link'
 
 function FinalUnlockPage() {
-  const { foundFlags, addFlag, checkFlag, progress } = useFlags()
+  const { mainFlagCount, addFlag, checkFlag, progress } = useFlags()
   const [showConfetti, setShowConfetti] = useState(false)
-  const allFlagsFound = foundFlags.length >= ALL_FLAGS.length - 1 // All except the final flag
+  const allFlagsFound = mainFlagCount >= ALL_FLAGS.length - 1 // All except the final flag
 
   useEffect(() => {
     if (allFlagsFound && !checkFlag('DINO{lab_secured}')) {
@@ -21,7 +21,7 @@ function FinalUnlockPage() {
   }, [allFlagsFound, addFlag, checkFlag])
 
   const labSecuredFlag = checkFlag('DINO{lab_secured}')
-  const totalFlags = foundFlags.length
+  const totalFlags = mainFlagCount
 
   if (!allFlagsFound && !labSecuredFlag) {
     return (

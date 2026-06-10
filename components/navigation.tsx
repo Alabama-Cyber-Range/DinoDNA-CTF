@@ -28,7 +28,7 @@ const navItems = [
 
 export function Navigation() {
   const pathname = usePathname()
-  const { foundFlags, progress } = useFlags()
+  const { mainFlagCount, hiddenFlagCount, progress } = useFlags()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
@@ -74,8 +74,13 @@ export function Navigation() {
             <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-primary/20">
               <Dna className="h-4 w-4 text-primary" />
               <span className="text-sm font-semibold text-foreground">
-                {foundFlags.length}/12
+                {mainFlagCount}/12
               </span>
+              {hiddenFlagCount > 0 && (
+                <span className="text-xs text-accent font-medium">
+                  +{hiddenFlagCount}★
+                </span>
+              )}
               <span className="text-xs text-muted-foreground hidden lg:inline">
                 DNA Fragments
               </span>
@@ -86,7 +91,7 @@ export function Navigation() {
                 <span
                   key={i}
                   className={`h-3 w-1 rounded-full transition-all duration-500 ${
-                    i < foundFlags.length
+                    i < mainFlagCount
                       ? 'bg-primary shadow-[0_0_6px_rgb(20_184_166)]'
                       : 'bg-secondary-foreground/15'
                   }`}
@@ -132,7 +137,7 @@ export function Navigation() {
             <div className="mt-4 pt-4 border-t border-border">
               <div className="flex items-center justify-between px-4">
                 <span className="text-sm text-muted-foreground">Progress</span>
-                <span className="text-sm font-medium">{foundFlags.length}/12 Fragments</span>
+                <span className="text-sm font-medium">{mainFlagCount}/12 Fragments</span>
               </div>
               <div className="mx-4 mt-2 h-2 bg-secondary rounded-full overflow-hidden">
                 <div 
