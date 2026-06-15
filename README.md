@@ -141,6 +141,42 @@ On the **Security Audit** page, use **Reset Progress** (clears `localStorage`). 
 
 ---
 
+## 🧑‍🏫 Classroom Slide Mapping (Grades 6–9)
+
+Use the challenge as a hands-on follow-up after introducing the **CIA Triad**, **2FA**, and why we should not blindly trust messages on wireless networks.
+
+### 1) CIA Triad mapping
+
+| CIA Pillar | Best flags to demo | Student takeaway |
+|---|---|---|
+| **Confidentiality** | `DINO{weak_passwords_stink}`, `DINO{hidden_pages_are_not_security}`, `DINO{access_control_required}`, `DINO{alt_text_discovery}` | Private data is exposed by weak logins and poor access controls. |
+| **Integrity** | `DINO{hashes_are_fingerprints}`, `DINO{encoding_is_not_encryption}`, `DINO{url_clues_matter}` | Data can be changed/tampered with; hashes help verify trust. |
+| **Availability** | `DINO{check_the_source}` (defensive coding discussion), `DINO{lab_secured}` (secure-by-design wrap-up) | Security planning keeps systems usable and recoverable. |
+
+### 2) 2FA bridge (from `DINO{weak_passwords_stink}`)
+
+- Show how quickly a guessed password breaks confidentiality.
+- Ask: “If someone guesses your password, what is the second lock?”  
+- Connect directly to 2FA as an extra factor (phone/app/token) that blocks simple password-only attacks.
+
+### 3) “Don’t trust wireless messages” bridge
+
+Use these flags to model risky assumptions in wireless environments (public Wi-Fi, shared airspace):
+
+- `DINO{encoding_is_not_encryption}` → Encoded text is still readable if intercepted.
+- `DINO{cookie_clue_found}` → Client-side/session data can be stolen or replayed if unprotected.
+- `DINO{hashes_are_fingerprints}` → Integrity checks detect altered messages.
+
+Class prompt: “If you receive a message over Wi-Fi, how do you know who sent it and whether it was changed?”
+
+### 4) Suggested 30-minute lesson flow
+
+1. **5 min:** Quick recap of CIA + 2FA.  
+2. **15 min:** Students hunt 3–4 flags (password, encoding, URL, hash).  
+3. **10 min:** Debrief each flag into CIA, then ask what 2FA or message-verification control would help.
+
+---
+
 ## 🎨 Design System
 
 Theme tokens and reusable lab UI utilities are defined in `app/globals.css`:
