@@ -1,6 +1,6 @@
 # 🦖 DinoDNA Research Lab — Cyber Intern Challenge
 
-A beginner-friendly, **capture-the-flag (CTF) style cybersecurity game** for middle-school students (grades 6–9). Players become "Cyber Interns" at a futuristic dinosaur-DNA research facility and hunt down **12 hidden DNA Fragments** (flags) by exploring weak security practices — guessable passwords, source-code leaks, URL tampering, encoding vs. encryption, cookies, and more.
+A beginner-friendly, **capture-the-flag (CTF) style cybersecurity game** for middle-school students (grades 6–9). Players become "Cyber Interns" at a futuristic dinosaur-DNA research facility and hunt down **13 hidden DNA Fragments** (flags) by exploring weak security practices — guessable passwords, source-code leaks, URL tampering, encoding vs. encryption, cookies, and more.
 
 The look and feel: **Jurassic Park research lab + clean Apple-style interface + beginner cyber investigation game.** Clean white/teal/green/cyan biotech palette, glassy "lab terminal" cards, soft glows, a subtle DNA/grid atmosphere, and a holographic 3D T-Rex model in the hero.
 
@@ -9,9 +9,9 @@ The look and feel: **Jurassic Park research lab + clean Apple-style interface + 
 ## ✨ Features
 
 - **Holographic hero** — a 3D Spline T-Rex model presented as a "live hologram" with scanlines, corner brackets, and an animated DNA-helix fallback while it loads.
-- **Genome recovery progress** — 12 DNA "sample vial" tiles with sealed/recovered states, an animated shimmer progress bar, and a system-status panel.
+- **Genome recovery progress** — 13 DNA "sample vial" tiles with sealed/recovered states, an animated shimmer progress bar, and a system-status panel.
 - **5 investigation areas** — each styled uniquely with mission-style language, hover-reveal hints, and a "Genesis Vault" that becomes dramatic at 100%.
-- **12 flags / 11 cybersecurity concepts** taught through hands-on discovery.
+- **13 flags / 12 cybersecurity concepts** taught through hands-on discovery.
 - **Progress persistence** via `localStorage` (survives refreshes; resettable in the Security Audit page).
 - **Responsive** — works on laptops and projected classroom screens; the hero stacks gracefully on mobile.
 - **Accessible motion** — animations respect `prefers-reduced-motion`.
@@ -68,7 +68,7 @@ app/
   lab-notes/            # Source-comment, cookie, Caesar-cipher challenges
   security-audit/       # Flag submission, checklist, DNA hash puzzle
   restricted-lab/       # "Hidden page" / access-control challenge
-  final-unlock/         # Final reward + certificate (needs 11 flags)
+  final-unlock/         # Final reward + certificate (needs 12 flags)
   globals.css           # Theme tokens + lab UI utilities/animations
   layout.tsx            # Root layout, fonts, metadata
 
@@ -82,7 +82,7 @@ components/
   ui/                   # shadcn/ui components
 
 lib/
-  flag-context.tsx      # All 12 flags + progress state (localStorage)
+  flag-context.tsx      # All 13 flags + progress state (localStorage)
 ```
 
 ---
@@ -105,7 +105,7 @@ If the value is left blank (or the model fails to load), the hero automatically 
 
 ---
 
-## 🎓 Instructor Answer Key (12 Flags)
+## 🎓 Instructor Answer Key (13 Flags)
 
 > **Spoilers below — for teachers/facilitators only.** Flags use the format `DINO{...}`. Players submit them on the **Security Audit** page. Progress is saved in the browser.
 
@@ -113,16 +113,17 @@ If the value is left blank (or the model fails to load), the hero automatically 
 |---|------|---------|------------------------|
 | 1 | `DINO{inspect_the_lab}` | Source-code inspection | View page source / Inspect on **Lab Notes** — hidden in an HTML comment |
 | 2 | `DINO{weak_passwords_stink}` | Weak passwords | **Staff Login** — sign in with `admin` / `dinosaur123` |
-| 3 | `DINO{hidden_pages_are_not_security}` | Security through obscurity | Visit **/restricted-lab** (linked from a Research File) |
-| 4 | `DINO{dna_is_data}` | Base64 encoding | Decode the Base64 caption on the **Stegosaurus** research file (`RElOT3tkbmFfaXNfZGF0YX0=`) |
-| 5 | `DINO{encoding_is_not_encryption}` | Encoding vs. encryption | **Lab Notes** — decode the Caesar cipher (`GLQR{...}`, shift 3) |
-| 6 | `DINO{check_the_source}` | HTML comments | View source of the **Home** page footer |
-| 7 | `DINO{url_clues_matter}` | URL / IDOR tampering | **Specimens** — change the URL to `?id=000` |
-| 8 | `DINO{alt_text_discovery}` | Alt-text data exposure | **Research Files** — click the T-Rex image / read its alt text |
-| 9 | `DINO{cookie_clue_found}` | Cookie storage | DevTools → Application → Cookies (`secret_specimen`) |
-| 10 | `DINO{hashes_are_fingerprints}` | Hash functions | Solve the DNA fingerprint matching puzzle on **Security Audit** |
-| 11 | `DINO{access_control_required}` | Access control | Awarded together with #3 on **/restricted-lab** |
-| 12 | `DINO{lab_secured}` | Final challenge | Auto-awarded on **/final-unlock** once the other 11 are found |
+| 3 | `DINO{network_traces_reveal_truth}` | Network response leakage | **Staff Login** — submit a wrong password, then inspect the `/api/staff-login` response in DevTools Network (it insecurely returns known passwords) |
+| 4 | `DINO{hidden_pages_are_not_security}` | Security through obscurity | Visit **/restricted-lab** (linked from a Research File) |
+| 5 | `DINO{dna_is_data}` | Base64 encoding | Decode the Base64 caption on the **Stegosaurus** research file (`RElOT3tkbmFfaXNfZGF0YX0=`) |
+| 6 | `DINO{encoding_is_not_encryption}` | Encoding vs. encryption | **Lab Notes** — decode the Caesar cipher (`GLQR{...}`, shift 3) |
+| 7 | `DINO{check_the_source}` | HTML comments | View source of the **Home** page footer |
+| 8 | `DINO{url_clues_matter}` | URL / IDOR tampering | **Specimens** — change the URL to `?id=000` |
+| 9 | `DINO{alt_text_discovery}` | Alt-text data exposure | **Research Files** — click the T-Rex image / read its alt text |
+| 10 | `DINO{cookie_clue_found}` | Cookie storage | DevTools → Application → Cookies (`secret_specimen`) |
+| 11 | `DINO{hashes_are_fingerprints}` | Hash functions | Solve the DNA fingerprint matching puzzle on **Security Audit** |
+| 12 | `DINO{access_control_required}` | Access control | Awarded together with #4 on **/restricted-lab** |
+| 13 | `DINO{lab_secured}` | Final challenge | Auto-awarded on **/final-unlock** once the other 12 are found |
 
 ### Classified / hidden flags (optional bonus)
 
@@ -130,7 +131,7 @@ These are **not** part of the 12-fragment progress bar or Genesis Vault requirem
 
 | Flag | Concept | Where / How to find it |
 |------|---------|------------------------|
-| `DINO{under_vial}` | 3D scene inspection | Hidden in the **Mission Briefing hologram** (Spline vial). Students read/click beneath the vial; clicking a Spline object named `under_vial` auto-recovers the flag. |
+| `DINO{under_vial}` | 3D scene inspection | Hidden in the **Mission Briefing hologram** (Spline vial). This is the "dino under vial" flag. Students read/click beneath the vial; clicking a Spline object named `under_vial` auto-recovers the flag. |
 
 To wire the click trigger in Spline, name the hidden object **`under_vial`** (see `components/spline-hero.tsx`).
 

@@ -6,6 +6,7 @@ import { createContext, useContext, useState, useEffect, ReactNode, useMemo } fr
 export const ALL_FLAGS = [
   'DINO{inspect_the_lab}',
   'DINO{weak_passwords_stink}',
+  'DINO{network_traces_reveal_truth}',
   'DINO{hidden_pages_are_not_security}',
   'DINO{dna_is_data}',
   'DINO{encoding_is_not_encryption}',

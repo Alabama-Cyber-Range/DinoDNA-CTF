@@ -51,6 +51,10 @@ function SecurityAuditPage() {
       concept: 'Weak Passwords',
       hint: 'Try logging in with common credentials on the Staff Login page',
     },
+    'DINO{network_traces_reveal_truth}': {
+      concept: 'Network Response Leakage',
+      hint: 'Submit a wrong password on Staff Login and inspect the login request response in DevTools Network',
+    },
     'DINO{hidden_pages_are_not_security}': {
       concept: 'Security Through Obscurity',
       hint: 'Find the link to /restricted-lab in the Research Files',
@@ -89,7 +93,7 @@ function SecurityAuditPage() {
     },
     'DINO{lab_secured}': {
       concept: 'Final Challenge',
-      hint: 'Open the Genesis Vault on the Mission Briefing once you have 11 fragments',
+      hint: `Open the Genesis Vault on the Mission Briefing once you have ${ALL_FLAGS.length - 1} fragments`,
     },
   }
 
@@ -268,7 +272,7 @@ function SecurityAuditPage() {
               </span>
             </h3>
             <p className="text-xs text-muted-foreground mb-4">
-              Bonus fragments hidden in the lab. They don&apos;t count toward the 12-fragment
+              Bonus fragments hidden in the lab. They don&apos;t count toward the {ALL_FLAGS.length}-fragment
               progress bar but can still be submitted here.
             </p>
             {foundHiddenFlags.length > 0 ? (

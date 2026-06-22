@@ -83,6 +83,7 @@ const missions = [
 
 function HomePage() {
   const { mainFlagCount, hiddenFlagCount, progress } = useFlags();
+  const totalMainFlags = ALL_FLAGS.length;
   const remaining = ALL_FLAGS.length - mainFlagCount;
   const vaultFragmentsNeeded = ALL_FLAGS.length - 1;
   const vaultReady = mainFlagCount >= vaultFragmentsNeeded;
@@ -138,7 +139,7 @@ function HomePage() {
                 </div>
                 <p className="text-sm text-amber-700 mt-1">
                   Multiple vulnerabilities detected across lab systems. Recover
-                  all 12 fragments in the format{" "}
+                  all {totalMainFlags} fragments in the format{" "}
                   <code className="bg-amber-100 px-2 py-0.5 rounded font-mono text-xs">
                     {"DINO{example_flag}"}
                   </code>
@@ -186,7 +187,7 @@ function HomePage() {
                 Genome Recovery Progress
               </h2>
               <p className="text-sm text-muted-foreground">
-                {mainFlagCount} of 12 DNA fragments recovered
+                {mainFlagCount} of {totalMainFlags} DNA fragments recovered
                 {remaining > 0 && (
                   <span className="text-primary"> · {remaining} remaining</span>
                 )}
@@ -213,7 +214,7 @@ function HomePage() {
 
         {/* Fragment tiles styled like DNA sample vials */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-          {Array.from({ length: 12 }).map((_, i) => {
+          {Array.from({ length: totalMainFlags }).map((_, i) => {
             const found = i < mainFlagCount;
             return (
               <div
@@ -273,7 +274,7 @@ function HomePage() {
         <StatusStat
           icon={Fingerprint}
           label="Fragments Recovered"
-          value={`${mainFlagCount} / 12`}
+          value={`${mainFlagCount} / ${totalMainFlags}`}
           tone="info"
         />
         <StatusStat

@@ -5,6 +5,10 @@ import { useFlags } from '@/lib/flag-context'
 import { useState } from 'react'
 import { Lock, User, AlertCircle, CheckCircle2, Lightbulb, Eye, EyeOff } from 'lucide-react'
 
+type LoginErrorResponse = {
+  message?: string
+}
+
 function StaffLoginPage() {
   const { addFlag, checkFlag } = useFlags()
   const [username, setUsername] = useState('')
@@ -14,16 +18,30 @@ function StaffLoginPage() {
   const [success, setSuccess] = useState(false)
   const [showHint, setShowHint] = useState(false)
 
-  // The weak credentials - admin/dinosaur123
-  const handleLogin = (e: React.FormEvent) => {
+  // Intentionally insecure training flow: failed logins leak password data from the API.
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
 
-    if (username.toLowerCase() === 'admin' && password === 'dinosaur123') {
-      setSuccess(true)
-      addFlag('DINO{weak_passwords_stink}')
-    } else {
-      setError('Invalid credentials. Think about what a lazy scientist might use...')
+    try {
+      const response = await fetch('/api/staff-login', {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      })
+
+      if (response.ok) {
+        setSuccess(true)
+        addFlag('DINO{weak_passwords_stink}')
+        return
+      }
+
+      const data = (await response.json()) as LoginErrorResponse
+      setError(data.message || 'Invalid credentials. Think about what a lazy scientist might use...')
+    } catch {
+      setError('Login service unavailable. Try again in a moment.')
     }
   }
 
@@ -145,6 +163,10 @@ function StaffLoginPage() {
                 <p className="text-muted-foreground">
                   Dr. Hammond mentioned the <strong>admin</strong> account still uses the 
                   default password. Someone should fix that!
+                </p>
+                <p className="text-muted-foreground mt-2">
+                  Also disable debug mode on failed logins - responses should not leak
+                  internal password lists.
                 </p>
               </div>
               {/* Hidden clue in a seemingly innocent note */}
