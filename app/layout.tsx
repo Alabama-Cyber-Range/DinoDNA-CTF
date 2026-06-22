@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { HiddenHtmlComment } from '@/components/hidden-html-comment'
 import './globals.css'
 
 /* Sleek, modern UI sans — clean biotech-lab feel, very readable at camp sizes */
@@ -31,6 +32,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="bg-background">
       <body className={`${plusJakarta.variable} ${ibmPlexMono.variable} font-sans antialiased`}>
+        <HiddenHtmlComment
+          text={`SECRET FLAG FOR SOURCE CODE INSPECTION: DINO{inspect_the_lab}
+Congratulations! You found the hidden comment.
+This teaches that HTML source code can reveal secrets!`}
+        />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

@@ -1,7 +1,6 @@
 "use client";
 
 import { ClientLayout } from "@/components/client-layout";
-import { HiddenHtmlComment } from "@/components/hidden-html-comment";
 import { useFlags } from "@/lib/flag-context";
 import { useState } from "react";
 import {
@@ -120,12 +119,6 @@ function LabNotesPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <HiddenHtmlComment
-        text={`SECRET FLAG FOR SOURCE CODE INSPECTION: DINO{inspect_the_lab}
-Congratulations! You found the hidden comment.
-This teaches that HTML source code can reveal secrets!`}
-      />
-
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-full mb-4">
           <BookOpen className="h-8 w-8 text-primary" />
