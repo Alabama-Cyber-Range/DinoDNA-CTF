@@ -113,7 +113,7 @@ If the value is left blank (or the model fails to load), the hero automatically 
 |---|------|---------|------------------------|
 | 1 | `DINO{inspect_the_lab}` | Source-code inspection | View page source / Inspect on **Lab Notes** — hidden in an HTML comment |
 | 2 | `DINO{weak_passwords_stink}` | Weak passwords | **Staff Login** — sign in with `admin` / `dinosaur123` |
-| 3 | `DINO{network_traces_reveal_truth}` | Network response leakage | **Staff Login** — submit a wrong password, then inspect the `/api/staff-login` response in DevTools Network (it insecurely returns known passwords) |
+| 3 | `DINO{network_traces_reveal_truth}` | Network response leakage | **Staff Login** — submit credentials (wrong or correct), then inspect the `/api/staff-login` response in DevTools Network (it insecurely returns known passwords) |
 | 4 | `DINO{hidden_pages_are_not_security}` | Security through obscurity | Visit **/restricted-lab** (linked from a Research File) |
 | 5 | `DINO{dna_is_data}` | Base64 encoding | Decode the Base64 caption on the **Stegosaurus** research file (`RElOT3tkbmFfaXNfZGF0YX0=`) |
 | 6 | `DINO{encoding_is_not_encryption}` | Encoding vs. encryption | **Lab Notes** — decode the Caesar cipher (`GLQR{...}`, shift 3) |

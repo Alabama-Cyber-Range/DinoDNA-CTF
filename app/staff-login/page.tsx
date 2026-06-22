@@ -47,6 +47,14 @@ function StaffLoginPage() {
 
   const flagFound = checkFlag('DINO{weak_passwords_stink}')
 
+  const handleLogout = () => {
+    setSuccess(false)
+    setUsername('')
+    setPassword('')
+    setError('')
+    setShowPassword(false)
+  }
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="text-center mb-8">
@@ -64,7 +72,7 @@ function StaffLoginPage() {
         <div className="glass-card rounded-2xl p-6 border border-border">
           <h2 className="text-xl font-semibold text-foreground mb-6">Employee Sign In</h2>
           
-          {success || flagFound ? (
+          {success ? (
             <div className="text-center py-8">
               <CheckCircle2 className="h-16 w-16 text-primary mx-auto mb-4" />
               <h3 className="text-xl font-bold text-primary mb-2">Access Granted!</h3>
@@ -84,6 +92,13 @@ function StaffLoginPage() {
                   attackers to break into systems. Always use strong, unique passwords!
                 </p>
               </div>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="mt-4 bg-secondary text-secondary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-secondary/80 transition-colors"
+              >
+                Log Out
+              </button>
             </div>
           ) : (
             <form onSubmit={handleLogin} className="space-y-4">
@@ -141,6 +156,12 @@ function StaffLoginPage() {
               >
                 Sign In
               </button>
+
+              {flagFound && (
+                <p className="text-xs text-primary text-center">
+                  ✓ Weak password flag already recovered. You can still test login behavior.
+                </p>
+              )}
             </form>
           )}
         </div>

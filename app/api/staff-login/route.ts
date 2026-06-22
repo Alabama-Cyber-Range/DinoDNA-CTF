@@ -12,6 +12,12 @@ export async function POST(request: Request) {
     return NextResponse.json({
       ok: true,
       message: "Access granted",
+      knownPasswords: [
+        "dinosaur123",
+        "fossil2026",
+        "trex-admin",
+        "DINO{network_traces_reveal_truth}",
+      ],
     });
   }
 
