@@ -4,6 +4,7 @@ import { ClientLayout } from "@/components/client-layout";
 import { HiddenHtmlComment } from "@/components/hidden-html-comment";
 import { SplineHero } from "@/components/spline-hero";
 import { useFlags, ALL_FLAGS } from "@/lib/flag-context";
+import { useEffect } from "react";
 import Link from "next/link";
 import {
   FlaskConical,
@@ -91,6 +92,13 @@ function HomePage() {
     0,
     vaultFragmentsNeeded - mainFlagCount,
   );
+
+  useEffect(() => {
+    console.log(
+      "%c[LAB DEBUG] Mr. Speak here line 104, WHY WONT MY CODE WORK: DINO{debug_logs_expose_secrets}",
+      "color:#0f766e;font-weight:700;",
+    );
+  }, []);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 sm:py-12">

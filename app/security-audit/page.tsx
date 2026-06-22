@@ -83,6 +83,10 @@ function SecurityAuditPage() {
       concept: 'Cookie Storage',
       hint: 'Check browser cookies in Developer Tools (F12 → Application → Cookies)',
     },
+    'DINO{debug_logs_expose_secrets}': {
+      concept: 'Console Log Leakage',
+      hint: 'Open browser DevTools Console on the Mission Briefing page and inspect leftover debug logs',
+    },
     'DINO{hashes_are_fingerprints}': {
       concept: 'Hash Functions',
       hint: 'Complete the DNA matching puzzle on the Security Audit page',

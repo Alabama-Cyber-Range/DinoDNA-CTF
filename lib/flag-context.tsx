@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from 'react'
 
-// Core challenge — 12 DNA fragments (progress bar + Genesis Vault)
+// Core challenge flags (progress bar + Genesis Vault)
 export const ALL_FLAGS = [
   'DINO{inspect_the_lab}',
   'DINO{weak_passwords_stink}',
@@ -14,6 +14,7 @@ export const ALL_FLAGS = [
   'DINO{url_clues_matter}',
   'DINO{alt_text_discovery}',
   'DINO{cookie_clue_found}',
+  'DINO{debug_logs_expose_secrets}',
   'DINO{hashes_are_fingerprints}',
   'DINO{access_control_required}',
   'DINO{lab_secured}',
@@ -41,7 +42,7 @@ interface FlagContextType {
   addFlag: (flag: string) => boolean
   checkFlag: (flag: string) => boolean
   isValidFlag: (flag: string) => boolean
-  /** Progress toward the 12-fragment challenge (hidden flags excluded) */
+  /** Progress toward the main challenge (hidden flags excluded) */
   progress: number
 }
 
