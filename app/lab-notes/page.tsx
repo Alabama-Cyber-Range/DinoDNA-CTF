@@ -97,7 +97,7 @@ function LabNotesPage() {
   const [showCipherHelper, setShowCipherHelper] = useState(false);
   const [cipherInput, setCipherInput] = useState("");
   const [cipherOutput, setCipherOutput] = useState("");
-  const [cipherShift, setCipherShift] = useState(3);
+  const [cipherShift, setCipherShift] = useState(1);
 
   // Caesar cipher decoder
   const decodeCaesar = (text: string, shift: number) => {
