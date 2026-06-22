@@ -57,7 +57,7 @@ function SecurityAuditPage() {
     },
     'DINO{hidden_pages_are_not_security}': {
       concept: 'Security Through Obscurity',
-      hint: 'Find the link to /restricted-lab in the Research Files',
+      hint: 'Find the link to a new page in the Research Files',
     },
     'DINO{dna_is_data}': {
       concept: 'Base64 Encoding',
@@ -73,7 +73,7 @@ function SecurityAuditPage() {
     },
     'DINO{url_clues_matter}': {
       concept: 'URL Manipulation',
-      hint: 'Try changing the specimen ID to 000 in the URL',
+      hint: 'Try changing the specimen ID to another number in the URL',
     },
     'DINO{alt_text_discovery}': {
       concept: 'Alt Text Inspection',
