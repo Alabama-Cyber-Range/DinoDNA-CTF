@@ -69,7 +69,7 @@ function SecurityAuditPage() {
     },
     'DINO{check_the_source}': {
       concept: 'HTML Comments',
-      hint: 'View the source code of the homepage footer',
+      hint: 'Open DevTools Sources and inspect the loaded file /genesis-vault-clues.js',
     },
     'DINO{url_clues_matter}': {
       concept: 'URL Manipulation',

@@ -1,7 +1,6 @@
 "use client";
 
 import { ClientLayout } from "@/components/client-layout";
-import { HiddenHtmlComment } from "@/components/hidden-html-comment";
 import { SplineHero } from "@/components/spline-hero";
 import { useFlags, ALL_FLAGS } from "@/lib/flag-context";
 import { useEffect } from "react";
@@ -446,8 +445,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Footer — real HTML comment for source-code flag (see HiddenHtmlComment) */}
-      <HiddenHtmlComment text="TEACHER NOTE: Flag hidden here for students who inspect source code — DINO{check_the_source}" />
       <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>
           DinoDNA Research Lab &copy; 2026 | Educational Cybersecurity Challenge

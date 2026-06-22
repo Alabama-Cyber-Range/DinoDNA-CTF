@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Plus_Jakarta_Sans, IBM_Plex_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import Script from 'next/script'
 import { HiddenHtmlComment } from '@/components/hidden-html-comment'
 import './globals.css'
 
@@ -37,6 +38,7 @@ export default function RootLayout({
 Congratulations! You found the hidden comment.
 This teaches that HTML source code can reveal secrets!`}
         />
+        <Script src="/genesis-vault-clues.js" strategy="afterInteractive" />
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

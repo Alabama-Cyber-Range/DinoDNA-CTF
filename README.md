@@ -117,7 +117,7 @@ If the value is left blank (or the model fails to load), the hero automatically 
 | 4 | `DINO{hidden_pages_are_not_security}` | Security through obscurity | Visit **/restricted-lab** (linked from a Research File) |
 | 5 | `DINO{dna_is_data}` | Base64 encoding | Decode the Base64 caption on the **Stegosaurus** research file (`RElOT3tkbmFfaXNfZGF0YX0=`) |
 | 6 | `DINO{encoding_is_not_encryption}` | Encoding vs. encryption | **Lab Notes** — decode the Caesar cipher (`GLQR{...}`, shift 3) |
-| 7 | `DINO{check_the_source}` | HTML comments | View source of the **Home** page footer |
+| 7 | `DINO{check_the_source}` | Source file inspection | Open DevTools **Sources** and inspect the loaded file `/genesis-vault-clues.js` |
 | 8 | `DINO{url_clues_matter}` | URL / IDOR tampering | **Specimens** — change the URL to `?id=000` |
 | 9 | `DINO{alt_text_discovery}` | Alt-text data exposure | **Research Files** — click the T-Rex image / read its alt text |
 | 10 | `DINO{cookie_clue_found}` | Cookie storage | DevTools → Application → Cookies (`secret_specimen`) |
