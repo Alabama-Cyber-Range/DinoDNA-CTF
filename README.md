@@ -66,7 +66,8 @@ app/
   research-files/       # Alt-text + Base64 challenges
   specimens/            # URL/IDOR challenge (?id=000)
   lab-notes/            # Source-comment, cookie, Caesar-cipher challenges
-  security-audit/       # Flag submission, checklist, DNA hash puzzle
+  security-audit/       # Flag submission, progress, and vulnerability checklist
+  dna-fingerprint/      # DNA hash matching mini-game page
   restricted-lab/       # "Hidden page" / access-control challenge
   final-unlock/         # Final reward + certificate (needs 13 flags)
   globals.css           # Theme tokens + lab UI utilities/animations
@@ -122,7 +123,7 @@ If the value is left blank (or the model fails to load), the hero automatically 
 | 9 | `DINO{alt_text_discovery}` | Alt-text data exposure | **Research Files** — click the T-Rex image / read its alt text |
 | 10 | `DINO{cookie_clue_found}` | Cookie storage | DevTools → Application → Cookies (`secret_specimen`) |
 | 11 | `DINO{debug_logs_expose_secrets}` | Console log leakage | Open DevTools **Console** on **Mission Briefing**. A leftover developer debug log accidentally prints this flag. |
-| 12 | `DINO{hashes_are_fingerprints}` | Hash functions | Solve the DNA fingerprint matching puzzle on **Security Audit** |
+| 12 | `DINO{hashes_are_fingerprints}` | Hash functions | Open **/dna-fingerprint** and solve the DNA fingerprint matching puzzle |
 | 13 | `DINO{under_vial}` | 3D scene inspection | Inspect and interact with the **Mission Briefing hologram**. Clicking a hidden Spline object named `under_vial` reveals this flag. |
 | 14 | `DINO{lab_secured}` | Final challenge | Auto-awarded on **/final-unlock** once the other 13 are found |
 

@@ -13,6 +13,7 @@ import {
   ClipboardList, 
   Lock, 
   BookOpen,
+  Fingerprint,
   Menu,
   X,
   Dna
@@ -23,6 +24,7 @@ const navItems = [
   { href: '/staff-login', label: 'Login', shortLabel: 'Login', icon: Lock },
   { href: '/research-files', label: 'Research Files', shortLabel: 'Files', icon: FileText },
   { href: '/specimens', label: 'Specimen Database', shortLabel: 'Specimens', icon: Database },
+  { href: '/dna-fingerprint', label: 'DNA Fingerprint Lab', shortLabel: 'Fingerprint', icon: Fingerprint },
   { href: '/lab-notes', label: 'Lab Notes', shortLabel: 'Notes', icon: BookOpen },
   { href: '/security-audit', label: 'Security Audit', shortLabel: 'Audit', icon: ClipboardList },
 ]

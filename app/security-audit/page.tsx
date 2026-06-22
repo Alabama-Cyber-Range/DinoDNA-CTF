@@ -3,15 +3,15 @@
 import { ClientLayout } from '@/components/client-layout'
 import { useFlags, ALL_FLAGS } from '@/lib/flag-context'
 import { useState } from 'react'
-import { ClipboardList, CheckCircle2, XCircle, Send, Trophy, Dna, RotateCcw } from 'lucide-react'
+import { ClipboardList, CheckCircle2, XCircle, Send, Trophy, Dna, RotateCcw, CircleHelp } from 'lucide-react'
 import Link from 'next/link'
-import { DNAHashPuzzle } from '@/components/dna-hash-puzzle'
 
 function SecurityAuditPage() {
   const { foundMainFlags, mainFlagCount, addFlag, checkFlag, progress } = useFlags()
   const [flagInput, setFlagInput] = useState('')
   const [submitResult, setSubmitResult] = useState<'success' | 'duplicate' | 'invalid' | null>(null)
   const [lastSubmitted, setLastSubmitted] = useState('')
+  const [activeHintFlag, setActiveHintFlag] = useState<string | null>(null)
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -89,7 +89,7 @@ function SecurityAuditPage() {
     },
     'DINO{hashes_are_fingerprints}': {
       concept: 'Hash Functions',
-      hint: 'Complete the DNA matching puzzle on the Security Audit page',
+      hint: 'Open the DNA Fingerprint Lab and complete the matching puzzle',
     },
     'DINO{under_vial}': {
       concept: '3D Scene Inspection',
@@ -260,14 +260,57 @@ function SecurityAuditPage() {
             )}
           </div>
 
-          {/* DNA Hash Puzzle */}
-          <div className="glass-card rounded-2xl p-6 border border-border">
-            <DNAHashPuzzle />
-          </div>
         </div>
 
         {/* Sidebar */}
         <div className="space-y-4">
+          {/* Checklist */}
+          <div className="glass-card rounded-2xl p-6 border border-border">
+            <h3 className="font-semibold text-foreground mb-4">📋 Vulnerability Checklist</h3>
+            <div className="space-y-2">
+              {ALL_FLAGS.map((flag) => {
+                const found = checkFlag(flag)
+                const desc = flagDescriptions[flag]
+                const hintOpen = activeHintFlag === flag
+                return (
+                  <div 
+                    key={flag}
+                    className={`relative flex items-center gap-2 text-sm p-2 rounded-lg transition-all ${
+                      found ? 'bg-primary/10 text-primary' : 'text-muted-foreground'
+                    }`}
+                  >
+                    {found ? (
+                      <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
+                    ) : (
+                      <div className="w-4 h-4 rounded-full border-2 border-current flex-shrink-0" />
+                    )}
+                    <span className={`flex-1 ${found ? '' : 'opacity-60'}`}>
+                      {desc?.concept || 'Unknown'}
+                    </span>
+                    {desc?.hint && (
+                      <button
+                        type="button"
+                        aria-label={`Show hint for ${desc.concept}`}
+                        onClick={() => setActiveHintFlag(hintOpen ? null : flag)}
+                        onMouseLeave={() => setActiveHintFlag((current) => (current === flag ? null : current))}
+                        className="group relative text-muted-foreground hover:text-foreground transition-colors"
+                      >
+                        <CircleHelp className="h-4 w-4" />
+                        <span
+                          className={`pointer-events-none absolute right-0 top-6 z-20 w-64 rounded-lg border border-border bg-background/95 p-2 text-xs text-foreground shadow-lg transition-opacity ${
+                            hintOpen ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
+                          }`}
+                        >
+                          {desc.hint}
+                        </span>
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
           {/* Genesis Vault — always visible so students know the endpoint exists */}
           <div className="glass-card rounded-2xl p-6 border border-primary/20">
             <h3 className="font-semibold text-foreground mb-2 flex items-center gap-2">
@@ -293,59 +336,10 @@ function SecurityAuditPage() {
             </Link>
           </div>
 
-          {/* Checklist */}
-          <div className="glass-card rounded-2xl p-6 border border-border">
-            <h3 className="font-semibold text-foreground mb-4">📋 Vulnerability Checklist</h3>
-            <div className="space-y-2">
-              {ALL_FLAGS.map((flag) => {
-                const found = checkFlag(flag)
-                const desc = flagDescriptions[flag]
-                return (
-                  <div 
-                    key={flag}
-                    className={`flex items-center gap-2 text-sm p-2 rounded-lg transition-all ${
-                      found ? 'bg-primary/10 text-primary' : 'text-muted-foreground'
-                    }`}
-                  >
-                    {found ? (
-                      <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
-                    ) : (
-                      <div className="w-4 h-4 rounded-full border-2 border-current flex-shrink-0" />
-                    )}
-                    <span className={found ? '' : 'opacity-60'}>
-                      {desc?.concept || 'Unknown'}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-
-          {/* Hints */}
-          <div className="glass-card rounded-2xl p-6 border border-accent/20">
-            <h3 className="font-semibold text-foreground mb-4">💡 Need Help?</h3>
-            <div className="space-y-3 text-sm">
-              {ALL_FLAGS.filter(f => !checkFlag(f)).slice(0, 3).map((flag) => {
-                const desc = flagDescriptions[flag]
-                return (
-                  <div key={flag} className="p-3 bg-secondary/50 rounded-lg">
-                    <p className="font-medium text-foreground text-xs mb-1">{desc?.concept}</p>
-                    <p className="text-muted-foreground text-xs">{desc?.hint}</p>
-                  </div>
-                )
-              })}
-              {mainFlagCount === ALL_FLAGS.length && (
-                <p className="text-primary text-center py-4">
-                  🎉 You found them all!
-                </p>
-              )}
-            </div>
-          </div>
-
           {/* Reset Button */}
           <button
             onClick={handleReset}
-            className="w-full flex items-center justify-center gap-2 bg-secondary hover:bg-secondary/80 text-muted-foreground py-3 rounded-xl text-sm transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-destructive/90 hover:bg-destructive text-destructive-foreground py-3 rounded-xl text-sm font-medium transition-colors border border-destructive/60"
           >
             <RotateCcw className="h-4 w-4" />
             Reset Progress
