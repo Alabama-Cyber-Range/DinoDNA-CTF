@@ -122,12 +122,10 @@ function HomePage() {
           </h1>
 
           <p className="text-lg sm:text-xl text-muted-foreground max-w-xl mx-auto lg:mx-0 mb-6">
-            Our lab exposed several weak security practices before the big
-            Dinosaur DNA Showcase. As our newest{" "}
-            <strong className="text-foreground">Cyber Intern</strong>, your
-            mission is to investigate the lab, recover hidden{" "}
-            <strong className="text-primary">DNA Fragments</strong>, and help us
-            lock everything down.
+            We found major security gaps before the Dinosaur DNA Showcase. As
+            our <strong className="text-foreground">Cyber Intern</strong>,
+            investigate the lab, recover <strong className="text-primary">DNA
+            Fragments</strong>, and help secure every system.
           </p>
 
           {/* Classified-style security alert */}
@@ -414,37 +412,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ============================================================
-          FIELD MANUAL — cyber concepts
-          ============================================================ */}
-      <section className="glass-card rounded-2xl p-6 border border-accent/20">
-        <div className="flex items-center gap-3 mb-6">
-          <Sparkles className="h-6 w-6 text-accent" />
-          <h2 className="text-2xl font-bold text-foreground">
-            Cyber Intern Field Manual
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-4">
-          <ConceptCard
-            title="🔐 Weak Passwords"
-            body='Simple passwords like "password123" or "admin" are easy for attackers to guess. Strong passwords mix letters, numbers, and symbols.'
-          />
-          <ConceptCard
-            title="🔍 Hidden Pages"
-            body="Just because a page isn't linked doesn't mean it's secure. Security through obscurity is not real security!"
-          />
-          <ConceptCard
-            title="📝 Source Code"
-            body="Web pages are made of code that anyone can view. Secrets hidden in HTML comments or JavaScript can be discovered!"
-          />
-          <ConceptCard
-            title="🧬 DNA = Digital Data"
-            body='DNA is like code for living things. In computing, hashes work similarly — they create unique "fingerprints" for digital data!'
-          />
-        </div>
-      </section>
-
       <footer className="mt-12 text-center text-sm text-muted-foreground">
         <p>
           DinoDNA Research Lab &copy; 2026 | Educational Cybersecurity Challenge
@@ -487,16 +454,6 @@ function StatusStat({
         </div>
         <div className="font-bold text-foreground">{value}</div>
       </div>
-    </div>
-  );
-}
-
-/** Field manual concept card. */
-function ConceptCard({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="bg-secondary/50 rounded-xl p-4 border border-transparent hover:border-primary/20 transition-colors">
-      <h3 className="font-semibold text-foreground mb-2">{title}</h3>
-      <p className="text-sm text-muted-foreground">{body}</p>
     </div>
   );
 }

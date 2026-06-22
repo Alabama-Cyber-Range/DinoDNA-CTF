@@ -123,7 +123,7 @@ function ResearchFilesPage() {
     return matchesSearch && matchesCategory;
   });
 
-  const handleImageClick = (file: (typeof researchFiles)[0]) => {
+  const handleImageHover = (file: (typeof researchFiles)[0]) => {
     // Check if alt text contains a flag
     if (file.imageAlt.includes("DINO{")) {
       const match = file.imageAlt.match(/DINO\{[^}]+\}/);
@@ -256,8 +256,8 @@ function ResearchFilesPage() {
                     <div>
                       {/* Real research photo; first card still hides an alt-text flag. */}
                       <div
-                        className="bg-secondary rounded-xl p-4 cursor-pointer hover:bg-secondary/80 transition-colors"
-                        onClick={() => handleImageClick(file)}
+                        className="bg-secondary rounded-xl p-4 cursor-help hover:bg-secondary/80 transition-colors"
+                        onMouseEnter={() => handleImageHover(file)}
                         title={file.imageAlt}
                       >
                         <img
@@ -269,15 +269,9 @@ function ResearchFilesPage() {
                         <p className="text-xs text-muted-foreground">
                           📷{" "}
                           {file.hasHiddenClue === "alt"
-                            ? "Click image to view details (check alt text!)"
+                            ? "Mouse over the image and inspect its alt text"
                             : "Research specimen photograph"}
                         </p>
-                        {/* Show alt text on click for T-Rex */}
-                        {file.hasHiddenClue === "alt" && altTextFlagFound && (
-                          <p className="text-xs text-primary mt-2 font-mono bg-primary/10 p-2 rounded">
-                            Alt text: {file.imageAlt}
-                          </p>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -305,25 +299,6 @@ function ResearchFilesPage() {
           Tip: type the discovered route manually in the address bar.
         </p>
       </div>
-
-      {/* Hints Section */}
-      <div className="grid md:grid-cols-2 gap-4">
-        <div className="glass-card rounded-2xl p-6 border border-border">
-          <h3 className="font-semibold text-foreground mb-3">
-            🔍 Investigation Tips
-          </h3>
-          <ul className="text-sm text-muted-foreground space-y-2">
-            <li>
-              • Images often have hidden &quot;alt text&quot; descriptions
-            </li>
-            <li>• Some text might be encoded in Base64 format</li>
-            <li>• Pay attention to unusual notes in research summaries</li>
-            <li>
-              • Right-click and &quot;Inspect&quot; to see hidden attributes
-            </li>
-          </ul>
-        </div>
-
         <div className="glass-card rounded-2xl p-6 border border-accent/20">
           <h3 className="font-semibold text-foreground mb-3">
             🧬 Base64 Decoder
@@ -342,7 +317,6 @@ function ResearchFilesPage() {
           />
         </div>
       </div>
-    </div>
   );
 }
 

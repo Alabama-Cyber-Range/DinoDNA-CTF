@@ -77,7 +77,7 @@ function SecurityAuditPage() {
     },
     'DINO{alt_text_discovery}': {
       concept: 'Alt Text Inspection',
-      hint: 'Click on the T-Rex research image and check its alt text',
+      hint: 'Mouse over the T-Rex research image, then inspect its alt text',
     },
     'DINO{cookie_clue_found}': {
       concept: 'Cookie Storage',

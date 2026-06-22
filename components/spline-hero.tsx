@@ -107,12 +107,6 @@ export function SplineHero() {
     >
       <CornerBrackets />
 
-      <div className="absolute top-4 left-4 z-20 flex items-center gap-2 rounded-full bg-white/70 backdrop-blur px-3 py-1 text-[11px] font-semibold text-primary border border-primary/20">
-        <Scan className="h-3.5 w-3.5" />
-        LIVE HOLOGRAM
-        <span className="ml-1 inline-block h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-      </div>
-
       <div className="absolute top-4 right-4 z-20 animate-float-slow">
         <div className="glass-panel rounded-xl px-3 py-2 flex items-center gap-2 text-xs font-medium text-[rgb(15_42_56)]">
           <FlaskConical className="h-4 w-4 text-primary" />

@@ -3,7 +3,7 @@
 import { ClientLayout } from '@/components/client-layout'
 import { useFlags } from '@/lib/flag-context'
 import { useState } from 'react'
-import { Lock, User, AlertCircle, CheckCircle2, Lightbulb, Eye, EyeOff } from 'lucide-react'
+import { Lock, User, AlertCircle, CheckCircle2, Eye, EyeOff } from 'lucide-react'
 
 type LoginErrorResponse = {
   message?: string
@@ -16,7 +16,6 @@ function StaffLoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
-  const [showHint, setShowHint] = useState(false)
 
   // Intentionally insecure training flow: failed logins leak password data from the API.
   const handleLogin = async (e: React.FormEvent) => {
@@ -200,26 +199,6 @@ function StaffLoginPage() {
               </div>
             </div>
           </div>
-
-          {/* Hint Toggle */}
-          <button
-            onClick={() => setShowHint(!showHint)}
-            className="w-full flex items-center justify-center gap-2 bg-secondary/50 hover:bg-secondary py-3 rounded-xl text-muted-foreground hover:text-foreground transition-colors"
-          >
-            <Lightbulb className="h-5 w-5" />
-            {showHint ? 'Hide Hint' : 'Need a Hint?'}
-          </button>
-
-          {showHint && (
-            <div className="bg-primary/5 border border-primary/20 rounded-xl p-4">
-              <h4 className="font-medium text-primary mb-2">💡 Hints:</h4>
-              <ul className="text-sm text-muted-foreground space-y-2">
-                <li>• What&apos;s a common default username for administrators?</li>
-                <li>• Read the notice board carefully...</li>
-                <li>• The password might relate to what this lab studies + numbers</li>
-              </ul>
-            </div>
-          )}
 
           {/* Security Concept */}
           <div className="glass-card rounded-2xl p-6 border border-accent/20">

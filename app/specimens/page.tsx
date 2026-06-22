@@ -314,12 +314,6 @@ function SpecimenDatabaseContent() {
               website doesn&apos;t properly check permissions, users might
               access restricted content by simply changing the URL.
             </p>
-            <div className="p-3 bg-secondary/50 rounded-lg">
-              <p className="text-xs text-muted-foreground font-medium">
-                CYBER TIP: Always verify user permissions on the server side,
-                not just by hiding links!
-              </p>
-            </div>
             {urlFlagFound && (
               <p className="text-xs text-primary mt-3">
                 ✓ URL manipulation flag discovered!
