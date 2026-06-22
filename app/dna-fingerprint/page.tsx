@@ -16,23 +16,12 @@ function DnaFingerprintPage() {
           DNA Fingerprint Lab
         </h1>
         <p className="text-muted-foreground">
-          Match each DNA sample to its digital fingerprint (hash) to recover the
-          hash challenge flag.
+          Hash text, match fingerprints, unlock the fragment.
         </p>
       </div>
 
       <div className="glass-card rounded-2xl p-6 border border-border mb-6">
         <DNAHashPuzzle />
-      </div>
-
-      <div className="text-center">
-        <Link
-          href="/security-audit"
-          className="inline-flex items-center gap-2 bg-secondary text-secondary-foreground px-5 py-2.5 rounded-lg font-medium hover:bg-secondary/80 transition-colors"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to Security Audit
-        </Link>
       </div>
     </div>
   );

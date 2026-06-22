@@ -1,48 +1,127 @@
 "use client"
 
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useFlags } from '@/lib/flag-context'
 import { CheckCircle2, XCircle, Dna, RefreshCw } from 'lucide-react'
 
-// DNA specimens with their "fingerprints" (simplified hashes)
-const specimens = [
-  { 
-    id: 'A', 
-    name: 'Tyrannosaurus Rex', 
-    dna: 'ATCG-GCTA-TTAA-CGCG', 
-    hash: 'TR-7X2K' 
-  },
-  { 
-    id: 'B', 
-    name: 'Velociraptor', 
-    dna: 'GCTA-ATCG-CGCG-TTAA', 
-    hash: 'VR-9M4P' 
-  },
-  { 
-    id: 'C', 
-    name: 'Triceratops', 
-    dna: 'TTAA-CGCG-ATCG-GCTA', 
-    hash: 'TC-3N8Q' 
-  },
-  { 
-    id: 'D', 
-    name: 'Stegosaurus', 
-    dna: 'CGCG-TTAA-GCTA-ATCG', 
-    hash: 'SG-5L1R' 
-  },
+const specimenNames = [
+  { id: 'A', name: 'Tyrannosaurus Rex' },
+  { id: 'B', name: 'Velociraptor' },
+  { id: 'C', name: 'Triceratops' },
+  { id: 'D', name: 'Stegosaurus' },
 ]
 
-// Shuffled hashes for the puzzle
-const shuffledHashes = ['VR-9M4P', 'TC-3N8Q', 'TR-7X2K', 'SG-5L1R']
+type PuzzleSpecimen = {
+  id: string
+  name: string
+  hash: string
+}
+
+async function sha256Hex(input: string): Promise<string> {
+  const encoded = new TextEncoder().encode(input)
+  const digest = await crypto.subtle.digest('SHA-256', encoded)
+  const bytes = new Uint8Array(digest)
+  return Array.from(bytes)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('')
+}
+
+function shortenHash(hash: string): string {
+  return `${hash.slice(0, 12)}...${hash.slice(-10)}`
+}
 
 export function DNAHashPuzzle() {
   const { addFlag, checkFlag } = useFlags()
+  const [specimens, setSpecimens] = useState<PuzzleSpecimen[]>([])
+  const [shuffledHashes, setShuffledHashes] = useState<string[]>([])
+  const [isLoadingPuzzle, setIsLoadingPuzzle] = useState(true)
+
+  const [playgroundInput, setPlaygroundInput] = useState('')
+  const [playgroundHash, setPlaygroundHash] = useState('')
+  const [isHashing, setIsHashing] = useState(false)
+
   const [matches, setMatches] = useState<Record<string, string>>({})
   const [submitted, setSubmitted] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
+  const [justUnlocked, setJustUnlocked] = useState(false)
+
+  useEffect(() => {
+    let active = true
+
+    const buildPuzzle = async () => {
+      const computed = await Promise.all(
+        specimenNames.map(async (specimen) => ({
+          ...specimen,
+          hash: await sha256Hex(specimen.name),
+        }))
+      )
+
+      if (!active) {
+        return
+      }
+
+      setSpecimens(computed)
+      setShuffledHashes(
+        computed
+          .map((s) => s.hash)
+          .sort(() => Math.random() - 0.5)
+      )
+      setIsLoadingPuzzle(false)
+    }
+
+    buildPuzzle()
+
+    return () => {
+      active = false
+    }
+  }, [])
+
+  const exampleNames = useMemo(() => specimenNames.map((s) => s.name), [])
+  const flagFound = checkFlag('DINO{hashes_are_fingerprints}')
+
+  useEffect(() => {
+    if (isLoadingPuzzle || submitted || specimens.length === 0) {
+      return
+    }
+
+    if (Object.keys(matches).length !== specimens.length) {
+      return
+    }
+
+    const allCorrect = specimens.every((s) => matches[s.id] === s.hash)
+    if (!allCorrect) {
+      return
+    }
+
+    const hadFlagAlready = checkFlag('DINO{hashes_are_fingerprints}')
+    setIsCorrect(true)
+    setSubmitted(true)
+
+    if (!hadFlagAlready) {
+      addFlag('DINO{hashes_are_fingerprints}')
+      setJustUnlocked(true)
+    }
+  }, [
+    matches,
+    specimens,
+    isLoadingPuzzle,
+    submitted,
+    addFlag,
+    checkFlag,
+  ])
 
   const handleMatch = (specimenId: string, hash: string) => {
     setMatches(prev => ({ ...prev, [specimenId]: hash }))
+  }
+
+  const handleHashText = async () => {
+    setIsHashing(true)
+    try {
+      const result = await sha256Hex(playgroundInput)
+      setPlaygroundHash(result)
+    } finally {
+      setIsHashing(false)
+    }
   }
 
   const handleSubmit = () => {
@@ -60,19 +139,22 @@ export function DNAHashPuzzle() {
     setMatches({})
     setSubmitted(false)
     setIsCorrect(false)
+    setJustUnlocked(false)
   }
-
-  const flagFound = checkFlag('DINO{hashes_are_fingerprints}')
 
   if (flagFound) {
     return (
       <div className="bg-primary/10 rounded-xl p-6 border border-primary/30">
         <div className="flex items-center gap-3 mb-4">
           <CheckCircle2 className="h-6 w-6 text-primary" />
-          <h3 className="font-semibold text-primary">Puzzle Completed!</h3>
+          <h3 className="font-semibold text-primary">
+            {justUnlocked ? 'Flag Unlocked!' : 'Already Unlocked'}
+          </h3>
         </div>
         <p className="text-sm text-muted-foreground mb-3">
-          You successfully matched all DNA samples to their digital fingerprints!
+          {justUnlocked
+            ? 'Perfect match. Credit was added automatically for this challenge.'
+            : 'You already completed this puzzle. Credit is already on your Security Audit progress.'}
         </p>
         <code className="text-sm font-mono text-primary">
           DINO&#123;hashes_are_fingerprints&#125;
@@ -85,20 +167,68 @@ export function DNAHashPuzzle() {
     <div className="space-y-6">
       <div>
         <h3 className="font-semibold text-foreground mb-2">🧬 DNA Fingerprint Matching</h3>
-        <p className="text-sm text-muted-foreground">
-          Each DNA sample has a unique digital fingerprint (hash). Match each dinosaur&apos;s 
-          DNA sequence to its correct fingerprint code!
-        </p>
       </div>
 
-      {/* Educational Note */}
+      {/* Single learning section */}
       <div className="bg-accent/5 border border-accent/20 rounded-xl p-4">
-        <p className="text-sm text-muted-foreground">
-          <strong className="text-foreground">💡 About Hashes:</strong> A hash is like a fingerprint for data. 
-          Just like how your fingerprint is unique to you, a hash creates a unique code for any piece of data. 
-          If the data changes even a tiny bit, the hash changes completely!
-        </p>
+        <h4 className="font-medium text-foreground mb-2">How Hashing Works</h4>
+        <ul className="text-sm text-muted-foreground list-disc pl-5 space-y-1">
+          <li>SHA-256 returns the same hash for the exact same input every time.</li>
+          <li>Changing one character (or one space) creates a very different hash.</li>
+          <li>Use the playground to hash dinosaur names, then match the fingerprints below.</li>
+        </ul>
       </div>
+
+      {/* Hash Playground */}
+      <div className="glass-card rounded-xl p-4 border border-accent/30 bg-accent/5 space-y-3">
+        <h4 className="font-medium text-foreground">Hash Playground (Real SHA-256)</h4>
+
+        <div className="flex flex-wrap gap-2">
+          {exampleNames.map((name) => (
+            <button
+              key={name}
+              type="button"
+              onClick={() => setPlaygroundInput(name)}
+              className="px-2.5 py-1 rounded-md text-xs bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors"
+            >
+              {name}
+            </button>
+          ))}
+        </div>
+
+        <textarea
+          value={playgroundInput}
+          onChange={(e) => setPlaygroundInput(e.target.value)}
+          rows={3}
+          placeholder="Type anything to hash..."
+          className="w-full px-3 py-2 bg-input border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 text-foreground font-mono text-sm"
+        />
+
+        <button
+          type="button"
+          onClick={handleHashText}
+          disabled={isHashing}
+          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-4 py-2 rounded-lg text-sm font-medium hover:bg-primary/90 transition-colors disabled:opacity-50"
+        >
+          <Dna className="h-4 w-4" />
+          {isHashing ? 'Hashing...' : 'Generate SHA-256'}
+        </button>
+
+        {playgroundHash && (
+          <div className="p-3 rounded-lg bg-background border border-border">
+            <p className="text-xs text-muted-foreground mb-1">SHA-256 Output</p>
+            <code className="block text-xs md:text-sm break-all text-primary font-mono">
+              {playgroundHash}
+            </code>
+          </div>
+        )}
+      </div>
+
+      {isLoadingPuzzle && (
+        <div className="glass-card rounded-xl p-4 border border-border text-sm text-muted-foreground">
+          Generating real dinosaur hashes...
+        </div>
+      )}
 
       {/* Puzzle Grid */}
       <div className="space-y-4">
@@ -115,9 +245,6 @@ export function DNAHashPuzzle() {
                   </span>
                   <span className="font-medium text-foreground">{specimen.name}</span>
                 </div>
-                <code className="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded">
-                  {specimen.dna}
-                </code>
               </div>
               
               <div className="flex items-center gap-2">
@@ -126,7 +253,7 @@ export function DNAHashPuzzle() {
                 <select
                   value={matches[specimen.id] || ''}
                   onChange={(e) => handleMatch(specimen.id, e.target.value)}
-                  disabled={submitted}
+                  disabled={submitted || isLoadingPuzzle}
                   className={`px-3 py-2 bg-input border rounded-lg text-sm font-mono focus:outline-none focus:ring-2 focus:ring-primary/50 ${
                     submitted 
                       ? matches[specimen.id] === specimen.hash 
@@ -137,7 +264,7 @@ export function DNAHashPuzzle() {
                 >
                   <option value="">Select hash...</option>
                   {shuffledHashes.map((hash) => (
-                    <option key={hash} value={hash}>{hash}</option>
+                    <option key={hash} value={hash}>{shortenHash(hash)}</option>
                   ))}
                 </select>
                 
@@ -157,11 +284,11 @@ export function DNAHashPuzzle() {
         {!submitted ? (
           <button
             onClick={handleSubmit}
-            disabled={Object.keys(matches).length !== specimens.length}
+            disabled={isLoadingPuzzle || Object.keys(matches).length !== specimens.length}
             className="flex-1 flex items-center justify-center gap-2 bg-primary text-primary-foreground py-3 rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle2 className="h-4 w-4" />
-            Verify Matches
+            Verify Matches (or auto-unlock on perfect match)
           </button>
         ) : (
           <button
