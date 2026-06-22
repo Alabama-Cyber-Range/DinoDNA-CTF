@@ -13,7 +13,6 @@ import {
   FlaskConical,
   Microscope,
 } from "lucide-react";
-import Link from "next/link";
 
 // Research data with hidden clues
 const researchFiles = [
@@ -239,12 +238,13 @@ function ResearchFilesPage() {
 
                       {/* Hint for restricted lab */}
                       {file.hasHiddenClue === "text" && (
-                        <Link
-                          href="/restricted-lab"
-                          className="inline-block mt-3 text-sm text-primary hover:underline"
-                        >
-                          View Restricted Research →
-                        </Link>
+                        <div className="mt-3 space-y-2">
+                          <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+                            URL clue found in notes. Next step: inspect the
+                            disabled "Restricted Lab" button at the bottom of
+                            this page in the Elements panel.
+                          </p>
+                        </div>
                       )}
                     </div>
                     <div>
@@ -277,6 +277,24 @@ function ResearchFilesPage() {
             </div>
           );
         })}
+      </div>
+
+      {/* Disabled route button challenge */}
+      <div className="glass-card rounded-2xl p-6 mb-8 border border-amber-300/60 bg-amber-50/60 text-center">
+        <h3 className="font-semibold text-foreground mb-2">🔒 Restricted File Section</h3>
+        <button
+          type="button"
+          disabled
+          data-route="/restricted-lab"
+          data-clue="inspect-disabled-button"
+          aria-label="Restricted lab route disabled"
+          className="mx-auto inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-secondary text-muted-foreground border border-border cursor-not-allowed opacity-70"
+        >
+          Restricted Lab (Disabled)
+        </button>
+        <p className="text-xs text-amber-700 mt-3 font-mono">
+          Tip: type the discovered route manually in the address bar.
+        </p>
       </div>
 
       {/* Hints Section */}

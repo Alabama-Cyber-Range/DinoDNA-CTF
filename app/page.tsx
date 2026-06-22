@@ -47,7 +47,7 @@ const missions = [
     action: "Inspect the files",
     href: "/research-files",
     icon: FileText,
-    hint: "Look closely at everything - images can hide secrets",
+    hint: "Look closely at everything - images and notes can hide URL paths",
     accent: "rgb(20 184 166)", // teal
   },
   {

@@ -15,14 +15,12 @@ function RestrictedLabPage() {
     const timer = setTimeout(() => {
       setFlagRevealed(true)
       addFlag('DINO{hidden_pages_are_not_security}')
-      addFlag('DINO{access_control_required}')
     }, 1000)
 
     return () => clearTimeout(timer)
   }, [addFlag])
 
   const hiddenPageFlag = checkFlag('DINO{hidden_pages_are_not_security}')
-  const accessControlFlag = checkFlag('DINO{access_control_required}')
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
@@ -78,26 +76,14 @@ function RestrictedLabPage() {
 
         {/* Revealed Flags */}
         {flagRevealed && (
-          <div className="space-y-4">
-            <div className="bg-primary/10 rounded-xl p-4 border border-primary/30">
-              <div className="flex items-center gap-3 mb-2">
-                <CheckCircle2 className="h-5 w-5 text-primary" />
-                <span className="font-medium text-primary">DNA Fragment #1 Found!</span>
-              </div>
-              <code className="text-sm font-mono text-primary">
-                DINO&#123;hidden_pages_are_not_security&#125;
-              </code>
+          <div className="bg-primary/10 rounded-xl p-4 border border-primary/30">
+            <div className="flex items-center gap-3 mb-2">
+              <CheckCircle2 className="h-5 w-5 text-primary" />
+              <span className="font-medium text-primary">DNA Fragment Found!</span>
             </div>
-
-            <div className="bg-accent/10 rounded-xl p-4 border border-accent/30">
-              <div className="flex items-center gap-3 mb-2">
-                <CheckCircle2 className="h-5 w-5 text-accent" />
-                <span className="font-medium text-accent">DNA Fragment #2 Found!</span>
-              </div>
-              <code className="text-sm font-mono text-accent">
-                DINO&#123;access_control_required&#125;
-              </code>
-            </div>
+            <code className="text-sm font-mono text-primary">
+              DINO&#123;hidden_pages_are_not_security&#125;
+            </code>
           </div>
         )}
       </div>
@@ -143,7 +129,7 @@ function RestrictedLabPage() {
 
       {/* Status */}
       <div className="mt-8 text-center text-sm text-muted-foreground">
-        <p>Flags captured: {hiddenPageFlag && accessControlFlag ? '2/2' : hiddenPageFlag || accessControlFlag ? '1/2' : '0/2'}</p>
+        <p>Flag captured: {hiddenPageFlag ? '1/1' : '0/1'}</p>
       </div>
     </div>
   )

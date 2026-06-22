@@ -91,10 +91,6 @@ function SecurityAuditPage() {
       concept: 'Hash Functions',
       hint: 'Complete the DNA matching puzzle on the Security Audit page',
     },
-    'DINO{access_control_required}': {
-      concept: 'Access Control',
-      hint: 'Find the restricted lab page through the Research Files',
-    },
     'DINO{lab_secured}': {
       concept: 'Final Challenge',
       hint: `Open the Genesis Vault on the Mission Briefing once you have ${ALL_FLAGS.length - 1} fragments`,

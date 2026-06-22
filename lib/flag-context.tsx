@@ -16,7 +16,6 @@ export const ALL_FLAGS = [
   'DINO{cookie_clue_found}',
   'DINO{debug_logs_expose_secrets}',
   'DINO{hashes_are_fingerprints}',
-  'DINO{access_control_required}',
   'DINO{lab_secured}',
 ]
 
