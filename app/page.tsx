@@ -83,7 +83,7 @@ const missions = [
 ];
 
 function HomePage() {
-  const { mainFlagCount, hiddenFlagCount, progress } = useFlags();
+  const { mainFlagCount, progress } = useFlags();
   const totalMainFlags = ALL_FLAGS.length;
   const remaining = ALL_FLAGS.length - mainFlagCount;
   const vaultFragmentsNeeded = ALL_FLAGS.length - 1;
@@ -198,9 +198,6 @@ function HomePage() {
                 {mainFlagCount} of {totalMainFlags} DNA fragments recovered
                 {remaining > 0 && (
                   <span className="text-primary"> · {remaining} remaining</span>
-                )}
-                {hiddenFlagCount > 0 && (
-                  <span className="text-accent"> · +{hiddenFlagCount} classified</span>
                 )}
               </p>
             </div>

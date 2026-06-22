@@ -1,14 +1,14 @@
 "use client"
 
 import { ClientLayout } from '@/components/client-layout'
-import { useFlags, ALL_FLAGS, HIDDEN_FLAGS } from '@/lib/flag-context'
+import { useFlags, ALL_FLAGS } from '@/lib/flag-context'
 import { useState } from 'react'
 import { ClipboardList, CheckCircle2, XCircle, Send, Trophy, Dna, RotateCcw } from 'lucide-react'
 import Link from 'next/link'
 import { DNAHashPuzzle } from '@/components/dna-hash-puzzle'
 
 function SecurityAuditPage() {
-  const { foundMainFlags, foundHiddenFlags, mainFlagCount, hiddenFlagCount, addFlag, checkFlag, progress } = useFlags()
+  const { foundMainFlags, mainFlagCount, addFlag, checkFlag, progress } = useFlags()
   const [flagInput, setFlagInput] = useState('')
   const [submitResult, setSubmitResult] = useState<'success' | 'duplicate' | 'invalid' | null>(null)
   const [lastSubmitted, setLastSubmitted] = useState('')
@@ -91,16 +91,13 @@ function SecurityAuditPage() {
       concept: 'Hash Functions',
       hint: 'Complete the DNA matching puzzle on the Security Audit page',
     },
+    'DINO{under_vial}': {
+      concept: '3D Scene Inspection',
+      hint: 'Inspect and interact with the Mission Briefing hologram to find hidden objects',
+    },
     'DINO{lab_secured}': {
       concept: 'Final Challenge',
       hint: `Open the Genesis Vault on the Mission Briefing once you have ${ALL_FLAGS.length - 1} fragments`,
-    },
-  }
-
-  const hiddenFlagDescriptions: Record<string, { concept: string; hint: string }> = {
-    'DINO{under_vial}': {
-      concept: '3D Scene Inspection',
-      hint: 'Explore the holographic vial on the Mission Briefing — inspect beneath the specimen',
     },
   }
 
@@ -263,44 +260,6 @@ function SecurityAuditPage() {
             )}
           </div>
 
-          {/* Hidden / classified fragments */}
-          <div className="glass-card rounded-2xl p-6 border border-accent/30 bg-accent/5">
-            <h3 className="font-semibold text-foreground mb-1 flex items-center gap-2">
-              ★ Classified Discoveries
-              <span className="text-xs font-normal text-muted-foreground">
-                (optional — not required for the vault)
-              </span>
-            </h3>
-            <p className="text-xs text-muted-foreground mb-4">
-              Bonus fragments hidden in the lab. They don&apos;t count toward the {ALL_FLAGS.length}-fragment
-              progress bar but can still be submitted here.
-            </p>
-            {foundHiddenFlags.length > 0 ? (
-              <div className="space-y-3">
-                {foundHiddenFlags.map((flag) => {
-                  const desc = hiddenFlagDescriptions[flag]
-                  return (
-                    <div key={flag} className="flex items-start gap-3 p-3 bg-accent/10 rounded-xl border border-accent/30">
-                      <div className="flex-1">
-                        <code className="text-sm font-mono text-accent">{flag}</code>
-                        {desc && (
-                          <p className="text-xs text-muted-foreground mt-1">
-                            Concept: {desc.concept}
-                          </p>
-                        )}
-                      </div>
-                      <CheckCircle2 className="h-5 w-5 text-accent" />
-                    </div>
-                  )
-                })}
-              </div>
-            ) : (
-              <p className="text-sm text-muted-foreground text-center py-4 italic">
-                No classified fragments yet… keep investigating the hologram and hidden systems.
-              </p>
-            )}
-          </div>
-
           {/* DNA Hash Puzzle */}
           <div className="glass-card rounded-2xl p-6 border border-border">
             <DNAHashPuzzle />
@@ -332,34 +291,6 @@ function SecurityAuditPage() {
             >
               {vaultReady ? 'Open Genesis Vault' : 'Attempt Vault Access'}
             </Link>
-          </div>
-
-          {/* Hidden fragment tracker (no spoilers until found) */}
-          <div className="glass-card rounded-2xl p-6 border border-accent/20">
-            <h3 className="font-semibold text-foreground mb-4">★ Classified Checklist</h3>
-            <div className="space-y-2">
-              {HIDDEN_FLAGS.map((flag) => {
-                const found = checkFlag(flag)
-                const desc = hiddenFlagDescriptions[flag]
-                return (
-                  <div
-                    key={flag}
-                    className={`flex items-center gap-2 text-sm p-2 rounded-lg transition-all ${
-                      found ? 'bg-accent/10 text-accent' : 'text-muted-foreground'
-                    }`}
-                  >
-                    {found ? (
-                      <CheckCircle2 className="h-4 w-4 flex-shrink-0" />
-                    ) : (
-                      <div className="w-4 h-4 rounded-full border-2 border-dashed border-current flex-shrink-0" />
-                    )}
-                    <span className={found ? '' : 'opacity-60'}>
-                      {found ? desc?.concept : 'Unknown classified fragment'}
-                    </span>
-                  </div>
-                )
-              })}
-            </div>
           </div>
 
           {/* Checklist */}

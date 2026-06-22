@@ -16,11 +16,12 @@ export const ALL_FLAGS = [
   'DINO{cookie_clue_found}',
   'DINO{debug_logs_expose_secrets}',
   'DINO{hashes_are_fingerprints}',
+  'DINO{under_vial}',
   'DINO{lab_secured}',
 ]
 
-// Bonus / classified fragments — not required for vault or main progress
-export const HIDDEN_FLAGS = ['DINO{under_vial}']
+// Hidden flags removed: all discoverable flags now count toward main progress.
+export const HIDDEN_FLAGS: string[] = []
 
 export const VALID_FLAGS = [...ALL_FLAGS, ...HIDDEN_FLAGS]
 
@@ -28,16 +29,10 @@ export function isMainFlag(flag: string) {
   return ALL_FLAGS.includes(flag.trim())
 }
 
-export function isHiddenFlag(flag: string) {
-  return HIDDEN_FLAGS.includes(flag.trim())
-}
-
 interface FlagContextType {
   foundFlags: string[]
   foundMainFlags: string[]
-  foundHiddenFlags: string[]
   mainFlagCount: number
-  hiddenFlagCount: number
   addFlag: (flag: string) => boolean
   checkFlag: (flag: string) => boolean
   isValidFlag: (flag: string) => boolean
@@ -73,11 +68,6 @@ export function FlagProvider({ children }: { children: ReactNode }) {
     [foundFlags],
   )
 
-  const foundHiddenFlags = useMemo(
-    () => foundFlags.filter((f) => isHiddenFlag(f)),
-    [foundFlags],
-  )
-
   const progress = Math.round((foundMainFlags.length / ALL_FLAGS.length) * 100)
 
   const isValidFlag = (flag: string): boolean => {
@@ -102,9 +92,7 @@ export function FlagProvider({ children }: { children: ReactNode }) {
       value={{
         foundFlags,
         foundMainFlags,
-        foundHiddenFlags,
         mainFlagCount: foundMainFlags.length,
-        hiddenFlagCount: foundHiddenFlags.length,
         addFlag,
         checkFlag,
         isValidFlag,

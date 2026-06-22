@@ -19,17 +19,17 @@ import {
 } from 'lucide-react'
 
 const navItems = [
-  { href: '/', label: 'Mission Briefing', icon: Home },
-  { href: '/staff-login', label: 'Staff Login', icon: Lock },
-  { href: '/research-files', label: 'Research Files', icon: FileText },
-  { href: '/specimens', label: 'Specimen Database', icon: Database },
-  { href: '/lab-notes', label: 'Lab Notes', icon: BookOpen },
-  { href: '/security-audit', label: 'Security Audit', icon: ClipboardList },
+  { href: '/', label: 'Mission', shortLabel: 'Mission', icon: Home },
+  { href: '/staff-login', label: 'Login', shortLabel: 'Login', icon: Lock },
+  { href: '/research-files', label: 'Research Files', shortLabel: 'Files', icon: FileText },
+  { href: '/specimens', label: 'Specimen Database', shortLabel: 'Specimens', icon: Database },
+  { href: '/lab-notes', label: 'Lab Notes', shortLabel: 'Notes', icon: BookOpen },
+  { href: '/security-audit', label: 'Security Audit', shortLabel: 'Audit', icon: ClipboardList },
 ]
 
 export function Navigation() {
   const pathname = usePathname()
-  const { mainFlagCount, hiddenFlagCount, progress } = useFlags()
+  const { mainFlagCount, progress } = useFlags()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const totalMainFlags = ALL_FLAGS.length
 
@@ -50,56 +50,55 @@ export function Navigation() {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {navItems.map((item) => {
-              const Icon = item.icon
               const isActive = pathname === item.href
               return (
                 <Link
                   key={item.href}
                   href={item.href}
+                  title={item.label}
                   className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all
                     ${isActive 
                       ? 'bg-primary text-primary-foreground' 
                       : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
                     }`}
                 >
-                  <Icon className="h-4 w-4" />
-                  {item.label}
+                  {item.shortLabel}
                 </Link>
               )
             })}
           </div>
 
-          {/* Progress Badge — segmented genome tracker */}
-          <div className="hidden md:flex items-center gap-3">
-            <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-primary/20">
-              <Dna className="h-4 w-4 text-primary" />
-              <span className="text-sm font-semibold text-foreground">
-                {mainFlagCount}/{totalMainFlags}
-              </span>
-              {hiddenFlagCount > 0 && (
-                <span className="text-xs text-accent font-medium">
-                  +{hiddenFlagCount}★
+          {/* Progress Badge */}
+          <div className="hidden md:flex items-center">
+            <div className="relative group">
+              <div className="flex items-center gap-2 bg-secondary/80 px-3 py-1.5 rounded-full border border-primary/20">
+                <Dna className="h-4 w-4 text-primary" />
+                <span className="text-sm font-semibold text-foreground">
+                  {mainFlagCount}/{totalMainFlags}
                 </span>
-              )}
-              <span className="text-xs text-muted-foreground hidden lg:inline">
-                DNA Fragments
-              </span>
-            </div>
-            {/* Genome segments that light up as fragments are recovered */}
-            <div className="flex items-center gap-0.5" aria-hidden="true">
-              {Array.from({ length: totalMainFlags }).map((_, i) => (
-                <span
-                  key={i}
-                  className={`h-3 w-1 rounded-full transition-all duration-500 ${
-                    i < mainFlagCount
-                      ? 'bg-primary shadow-[0_0_6px_rgb(20_184_166)]'
-                      : 'bg-secondary-foreground/15'
-                  }`}
-                  style={{ transitionDelay: `${i * 30}ms` }}
-                />
-              ))}
+                <span className="text-xs text-muted-foreground hidden xl:inline">
+                  DNA Fragments
+                </span>
+              </div>
+
+              <div className="pointer-events-none absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-20">
+                <div className="bg-background/95 backdrop-blur-sm border border-primary/20 rounded-lg p-2 shadow-lg">
+                  <div className="flex items-center gap-0.5" aria-hidden="true">
+                    {Array.from({ length: totalMainFlags }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={`h-3 w-1 rounded-full ${
+                          i < mainFlagCount
+                            ? 'bg-primary shadow-[0_0_4px_rgb(20_184_166)]'
+                            : 'bg-secondary-foreground/20'
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
