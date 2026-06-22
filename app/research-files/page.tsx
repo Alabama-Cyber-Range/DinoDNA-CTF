@@ -27,6 +27,7 @@ const researchFiles = [
     details:
       "The Tyrannosaurus Rex specimen showed remarkable DNA preservation due to amber encapsulation. Initial sequencing reveals approximately 3.2 billion base pairs with 94% recovery rate.",
     // Hidden clue: Image alt text contains a flag
+    imageSrc: "/Dinos/tyrannosaurus.png",
     imageAlt: "T-Rex skull fossil - DINO{alt_text_discovery}",
     hasHiddenClue: "alt",
   },
@@ -40,6 +41,7 @@ const researchFiles = [
     summary: "Analysis of pack hunting behaviors based on fossil evidence.",
     details:
       "Fossilized trackways suggest velociraptors hunted in coordinated packs of 3-5 individuals. Brain cavity analysis indicates high intelligence comparable to modern corvids.",
+    imageSrc: "/Dinos/velociraptor.png",
     imageAlt: "Velociraptor skeletal reconstruction",
     hasHiddenClue: null,
   },
@@ -54,6 +56,7 @@ const researchFiles = [
     // Hidden clue in expandable details
     details:
       "The Brachiosaurus thrived in warm, humid environments with abundant vegetation. Isotope analysis of fossilized teeth reveals a diet primarily consisting of conifer needles and ferns. Note: For more classified research, check /restricted-lab",
+    imageSrc: "/Dinos/branchiosaurus.png",
     imageAlt: "Brachiosaurus in reconstructed habitat",
     hasHiddenClue: "text",
   },
@@ -67,6 +70,7 @@ const researchFiles = [
     summary: "Growth patterns in Triceratops horn structures.",
     details:
       "CT scanning of juvenile to adult specimens reveals horn growth rates of approximately 2.5cm per year. The frill bone density increased with age, suggesting defensive adaptation.",
+    imageSrc: "/Dinos/triceratops.png",
     imageAlt: "Triceratops horn cross-section analysis",
     hasHiddenClue: null,
   },
@@ -80,6 +84,7 @@ const researchFiles = [
     summary: "Aerodynamic analysis of pterosaur wing structures.",
     details:
       "Wing membrane preservation in specimen PT-007 allowed detailed analysis of flight capabilities. Estimated cruising speed: 35-45 km/h with maximum altitude of 4,500 meters.",
+    imageSrc: "/Dinos/pteranodon.png",
     imageAlt: "Pteranodon wing membrane analysis",
     hasHiddenClue: null,
   },
@@ -95,6 +100,7 @@ const researchFiles = [
       "Investigation of dorsal plate thermoregulatory function. Caption: RElOT3tkbmFfaXNfZGF0YX0=",
     details:
       "Blood vessel impressions on plate surfaces support the thermoregulation hypothesis. Plates may have also served display functions for species recognition and mating.",
+    imageSrc: "/Dinos/stegosaurus.png",
     imageAlt: "Stegosaurus plate thermal imaging",
     hasHiddenClue: "base64",
   },
@@ -248,15 +254,18 @@ function ResearchFilesPage() {
                       )}
                     </div>
                     <div>
-                      {/* Fake image placeholder with clickable alt text clue */}
+                      {/* Real research photo; first card still hides an alt-text flag. */}
                       <div
                         className="bg-secondary rounded-xl p-4 cursor-pointer hover:bg-secondary/80 transition-colors"
                         onClick={() => handleImageClick(file)}
                         title={file.imageAlt}
                       >
-                        <div className="aspect-video bg-gradient-to-br from-primary/20 to-accent/20 rounded-lg flex items-center justify-center mb-2">
-                          <Icon className="h-12 w-12 text-primary/40" />
-                        </div>
+                        <img
+                          src={file.imageSrc}
+                          alt={file.imageAlt}
+                          className="aspect-video w-full object-cover rounded-lg mb-2 border border-border/60"
+                          loading="lazy"
+                        />
                         <p className="text-xs text-muted-foreground">
                           📷{" "}
                           {file.hasHiddenClue === "alt"
